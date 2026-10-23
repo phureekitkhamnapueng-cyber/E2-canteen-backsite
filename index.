@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ฝั่งร้านค้า โรงอาหาร E2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f1ea;--surface:#fffdf9;--ink:#2a1d1a;--muted:#7a6a63;--line:#e5dacd;--red:#9b1c1f;--red-ink:#fff;--gold:#d9a233;--gold-soft:#f8ebc9;--ok:#2f7d4f;--ok-soft:#d9efe1;--warn:#b86a12;--warn-soft:#fbe6c8;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1b1412;--surface:#261c19;--ink:#f3e9e1;--muted:#b3a299;--line:#3a2d29;--red:#d9484b;--gold:#e6b449;--gold-soft:#3b2f15;--ok:#6cc58f;--ok-soft:#1c3427;--warn:#f0a95a;--warn-soft:#3d2a12;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#1b1412;--surface:#261c19;--ink:#f3e9e1;--muted:#b3a299;--line:#3a2d29;--red:#d9484b;--gold:#e6b449;--gold-soft:#3b2f15;--ok:#6cc58f;--ok-soft:#1c3427;--warn:#f0a95a;--warn-soft:#3d2a12;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Prompt","Noto Sans Thai","Sarabun",system-ui,sans-serif;font-size:16px;line-height:1.5}
+.app{max-width:560px;margin:0 auto;min-height:100vh;padding-bottom:40px}
+header{padding:18px 18px 8px;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.brand{font-weight:700;font-size:20px;color:var(--red);margin:0}
+.sub{color:var(--muted);font-size:13px;margin:0}
+main{padding:0 18px}
+.qbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;margin:8px -18px 12px;padding:10px 18px;background:var(--red);color:var(--red-ink);display:flex;gap:18px;align-items:center}
+.qbar .s{text-align:center;flex:1}
+.qbar b{display:block;font-size:28px;line-height:1.1}
+.qbar small{font-size:12px;opacity:.9}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 10px}
+.tab{flex:none;font:inherit;font-size:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 14px;cursor:pointer}
+.tab.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;margin:0 0 10px}
+.card.new{border-color:var(--gold);box-shadow:0 0 0 2px var(--gold-soft)}
+.top{display:flex;align-items:center;gap:12px}
+.no{font-size:30px;font-weight:700;color:var(--red);line-height:1}
+.pos{font-size:12px;color:var(--muted)}
+.tag{margin-left:auto;font-size:12px;font-weight:600;border-radius:999px;padding:3px 12px}
+.tag.new{background:var(--gold-soft);color:var(--warn)}
+.tag.wait{background:var(--warn-soft);color:var(--warn)}
+.tag.cook{background:var(--red);color:var(--red-ink)}
+.tag.done{background:var(--ok-soft);color:var(--ok)}
+.lines{margin:10px 0;padding:10px 0;border-top:1px dashed var(--line);border-bottom:1px dashed var(--line)}
+.lines div{display:flex;justify-content:space-between;padding:1px 0}
+.meta{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);margin-bottom:10px}
+.acts{display:flex;gap:8px}
+.btn{flex:1;font:inherit;font-weight:600;border:0;border-radius:12px;padding:12px;background:var(--red);color:var(--red-ink);cursor:pointer;font-size:15px}
+.btn.ok{background:var(--ok);color:#fff}
+.btn.ghost{flex:none;background:transparent;color:var(--muted);border:1px solid var(--line);font-weight:500}
+.btn.sm{flex:none;padding:8px 12px;font-size:13px}
+.empty{text-align:center;color:var(--muted);padding:36px 0}
+.pulse{animation:pl 1.6s infinite}
+@keyframes pl{0%{box-shadow:0 0 0 0 rgba(217,162,51,.6)}100%{box-shadow:0 0 0 12px rgba(217,162,51,0)}}
+.tools{font-size:12px;color:var(--muted);text-align:center;margin-top:16px}
+.tools label{cursor:pointer}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+  <div><p class="brand">E2 ฝั่งร้านค้า</p><p class="sub" id="shop">🍜 ก๋วยเตี๋ยวเรือ · โรงอาหาร E2</p></div>
+  <button class="btn sm ghost" id="sim">+ จำลองออเดอร์</button>
+</header>
+<main>
+  <div class="qbar" id="qbar"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="list"></div>
+  <div class="tools"><label><input type="checkbox" id="auto" checked> ออเดอร์ใหม่เข้าอัตโนมัติ (โหมดสาธิต)</label></div>
+</main>
+</div>
+
+<script>
+var MENU=[["ก๋วยเตี๋ยวหมู",40],["ก๋วยเตี๋ยวเนื้อ",50],["เย็นตาโฟ",45],["เกี๊ยวน้ำ",40]];
+var ST={new:"ออเดอร์ใหม่",wait:"รอทำ",cook:"กำลังทำ",done:"เสร็จแล้ว"};
+var orders=[],seq=0,tab="all";
+var $=function(i){return document.getElementById(i)};
+
+function newOrder(){
+  seq++;
+  var n=1+Math.floor(Math.random()*3),lines=[],used={};
+  for(var i=0;i<n;i++){var k=Math.floor(Math.random()*MENU.length);if(used[k])continue;used[k]=1;lines.push({n:MENU[k][0],q:1+Math.floor(Math.random()*2),p:MENU[k][1]})}
+  var t=lines.reduce(function(a,l){return a+l.q*l.p},0);
+  orders.push({id:seq,no:"N"+String(100+seq).slice(1),lines:lines,total:t,status:"new",at:new Date()});
+  render();
+}
+function hhmm(d){return d.toLocaleTimeString("th-TH",{hour:"2-digit",minute:"2-digit"})}
+function active(){return orders.filter(function(o){return o.status!="done"})}
+function setStatus(id,s){
+  orders.forEach(function(o){if(o.id==id)o.status=s});
+  if(s=="remove")orders=orders.filter(function(o){return o.id!=id});
+  render();
+}
+function render(){
+  var c={new:0,wait:0,cook:0,done:0};orders.forEach(function(o){c[o.status]++});
+  $("qbar").innerHTML='<div class="s"><b>'+(c.new+c.wait)+'</b><small>คิวรอทำ</small></div><div class="s"><b>'+c.cook+'</b><small>กำลังทำ</small></div><div class="s"><b>'+c.done+'</b><small>รอลูกค้ารับ</small></div>';
+  var T=[["all","ทั้งหมด",orders.length],["new","ใหม่",c.new],["wait","รอทำ",c.wait],["cook","กำลังทำ",c.cook],["done","เสร็จ",c.done]];
+  $("tabs").innerHTML=T.map(function(t){return '<button class="tab'+(tab==t[0]?" on":"")+'" data-t="'+t[0]+'">'+t[1]+' ('+t[2]+')</button>'}).join("");
+  document.querySelectorAll(".tab").forEach(function(b){b.onclick=function(){tab=b.dataset.t;render()}});
+  var act=active(),list=orders.filter(function(o){return tab=="all"||o.status==tab});
+  list.sort(function(a,b){var r={new:0,cook:1,wait:2,done:3};return tab=="all"?(r[a.status]-r[b.status]||a.id-b.id):a.id-b.id});
+  $("list").innerHTML=list.length?list.map(function(o){
+    var pos=act.indexOf(o)+1,ph=o.status=="done"?"พร้อมให้รับ":"ลำดับคิวที่ "+pos;
+    var acts={new:'<button class="btn ghost" data-a="remove" data-i="'+o.id+'">ปฏิเสธ</button><button class="btn" data-a="wait" data-i="'+o.id+'">รับออเดอร์</button>',
+      wait:'<button class="btn" data-a="cook" data-i="'+o.id+'">เริ่มทำอาหาร</button>',
+      cook:'<button class="btn ok" data-a="done" data-i="'+o.id+'">ทำเสร็จแล้ว แจ้งลูกค้า</button>',
+      done:'<button class="btn ghost" data-a="remove" data-i="'+o.id+'">ลูกค้ารับแล้ว</button>'}[o.status];
+    return '<div class="card'+(o.status=="new"?" new pulse":"")+'"><div class="top"><div><div class="no">'+o.no+'</div><div class="pos">'+ph+'</div></div><span class="tag '+o.status+'">'+ST[o.status]+'</span></div><div class="lines">'+o.lines.map(function(l){return '<div><span>'+l.n+' × '+l.q+'</span><span>'+(l.q*l.p)+'</span></div>'}).join("")+'</div><div class="meta"><span>สั่งเมื่อ '+hhmm(o.at)+' · ชำระแล้ว ✓</span><b>'+o.total+' บาท</b></div><div class="acts">'+acts+'</div></div>';
+  }).join(""):'<div class="empty">ยังไม่มีออเดอร์ในหมวดนี้</div>';
+  document.querySelectorAll(".acts .btn").forEach(function(b){b.onclick=function(){setStatus(+b.dataset.i,b.dataset.a)}});
+}
+$("sim").onclick=newOrder;
+setInterval(function(){if($("auto").checked&&active().length<8)newOrder()},15000);
+newOrder();newOrder();
+</script>
+</body>
+</html>
